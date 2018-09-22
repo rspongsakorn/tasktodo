@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - @localhost" uuid="63de043d-8079-4471-b674-8a187deb98bd">
+    <database-info product="MySQL" version="5.6.31" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.46 ( Revision: 9cc87a48e75c2d2e87c1a293b2862ce651cb256e )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.5">
+      <schema id="1" name="test"/>
+      <table id="2" parent="1" name="task"/>
+      <column id="3" parent="2" name="subject">
+        <data-type>text</data-type>
+      </column>
+      <column id="4" parent="2" name="detail">
+        <data-type>text</data-type>
+      </column>
+      <column id="5" parent="2" name="is_done">
+        <data-type>tinyint(1)</data-type>
+      </column>
+    </database-model>
+  </data-source>
+</component>
