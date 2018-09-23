@@ -8,13 +8,32 @@
 
 class Task_model extends CI_Model {
 
-    function getAll(){
-        $q  = $this->db->query("SELECT * from task");
-        if($q->num_rows() > 0) {
-            foreach ($q->result() as $row) {
-                $data [] = $row;
-            }
-            return $data;
-        }
+    function getTask($id){
+        $this->db->where('task_id', $id);
+        $query = $this->db->get('tasks');
+        return $query->row_array();
     }
+
+
+    function getAllTask(){
+        $query = $this->db->get('tasks');
+        return $query->result_array();
+    }
+
+    function insertTask($data){
+        $this->db->insert('tasks', $data);
+    }
+    
+    function updateTask($id, $data){
+        $this->db->where('task_id', $id);
+        $this->db->set( $data);
+        $this->db->update('tasks');
+    }
+
+    function deleteTask($id){
+        $this->db->where('task_id', $id);
+        $this->db->delete('tasks');
+    }
+
+
 }
