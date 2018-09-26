@@ -8,7 +8,28 @@
 
 class Task_model extends CI_Model {
 
-    function getAllTask(){
+    function getAllTask($data){
+        if(isset($data['subject'])){
+            $this->db->like('subject', $data['subject']);
+        }
+        
+        if(isset($data['status'])){
+            $this->db->where('status', $data['status']);
+        }
+        
+        if(isset($data['offset'])){
+            $this->db->offset($data['offset']);
+        }
+        
+        if(isset($data['limit'])){
+            $this->db->limit($data['limit']);
+        }
+
+        $order_by = isset($data['order_by']) ? $data['order_by'] : "task_id";
+        $order_direction = isset($data['order_direction']) ? $data['order_direction'] : "asc";
+
+        $this->db->order_by($order_by, $order_direction);
+
         $query = $this->db->get('tasks');
         return $query->result_array();
     }

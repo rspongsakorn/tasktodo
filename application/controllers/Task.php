@@ -17,9 +17,35 @@ class Task extends REST_Controller {
     
     public function viewAll_get(){
 
-        $tasks = $this->Task_model->getAllTask();
+        $query_data = array();
+        if(isset($_GET['subject']) && $_GET['subject']){
+            $query_data['subject'] = $_GET['subject'];
+        }
+
+        if(isset($_GET['status']) && $_GET['status']){
+            $query_data['status'] = $_GET['status'];
+        }
+
+        if(isset($_GET['order_by']) && $_GET['order_by']){
+            $query_data['order_by'] = $_GET['order_by'];
+        }
+
+        if(isset($_GET['order_direction']) && $_GET['order_direction']){
+            $query_data['order_direction'] = $_GET['order_direction'];
+        }
+
+        if(isset($_GET['offset']) && $_GET['offset']){
+            $query_data['offset'] = $_GET['offset'];
+        }
+
+        if(isset($_GET['limit']) && $_GET['limit']){
+            $query_data['limit'] = $_GET['limit'];
+        }
+        $tasks = $this->Task_model->getAllTask($query_data);
         if($tasks){
             $this->response($tasks, 200);
+        }else{
+            $this->response(array(), 200);
         }
 
     }
@@ -35,18 +61,22 @@ class Task extends REST_Controller {
     }
 
     public function create_post(){
-        
-        $data = array(
-            'subject' => $_POST['subject'],
-            'detail' => isset($_POST['detail']) ? $_POST['detail'] : "",
-            'status' => isset($_POST['status']) && $_POST['status'] == "done" ? "done" : "pending"
-        );
-        $result = $this->Task_model->insertTask($data);
-        if($result){
-            $this->response(array("message" => "The Task is successfully created"), 201);
+        if(isset($_POST['subject'])){
+            $data = array(
+                'subject' => $_POST['subject'],
+                'detail' => isset($_POST['detail']) ? $_POST['detail'] : "",
+                'status' => isset($_POST['status']) && $_POST['status'] == "done" ? "done" : "pending"
+            );
+            $result = $this->Task_model->insertTask($data);
+            if($result){
+                $this->response(array("message" => "The Task is successfully created"), 201);
+            }else{
+                $this->response(array("message" => "Fail to create task, Please try again later"), 500);
+            }
         }else{
-            $this->response(array("message" => "Fail to create task, Please try again later"), 500);
+            $this->response(array("message" => "'subject' is required and could not be null"), 400);
         }
+
     }
 
     public function update_put($id){
@@ -106,7 +136,7 @@ class Task extends REST_Controller {
         if($task){
             $result = $this->Task_model->deleteTask($id);
             if($result) {
-                $this->response(array("message" => "The Task is successfully deleted"), 204);
+                $this->response(array("message" => "The Task is successfully deleted"), 200);
             }else{
                 $this->response(array("message" => "Fail to delete the task, Please try again later"), 500);
             }

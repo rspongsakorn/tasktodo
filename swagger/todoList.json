@@ -3,7 +3,7 @@
   "info": {
     "description": "This is a simple 'TODO' task list",
     "version": "1.0.0",
-    "title": "Task TODO list",
+    "title": "TODO task list API Document",
     "contact": {
       "email": "rs.pongsakorn@gmail.com"
     }
@@ -65,7 +65,10 @@
             "description": "The task is successfully created"
           },
           "400": {
-            "description": "Invalid Order"
+            "description": "Invalid data"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -79,13 +82,78 @@
           "application/json",
           "application/xml"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "subject",
+            "in": "query",
+            "description": "Search task(s) by subject",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Query task(s) by status",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "pending",
+              "done"
+            ]
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "description": "Specify field to be sorted (default is 'task_id')",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "task_id",
+              "subject"
+            ]
+          },
+          {
+            "name": "order_direction",
+            "in": "query",
+            "description": "Specify sorted direction (default is 'asc')",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of tasks to skip before starting to collect the result set",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of tasks to skip before starting to collect the result set",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The numbers of tasks to return",
+            "required": false,
+            "type": "integer"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Successful operation",
+            "description": "Task(s) is fetched",
             "schema": {
               "$ref": "#/definitions/Task"
             }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -112,13 +180,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful operation",
+            "description": "Task is found",
             "schema": {
               "$ref": "#/definitions/Task"
             }
           },
           "404": {
             "description": "Task ID not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -160,13 +231,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful operation"
+            "description": "Successful update the task"
           },
           "400": {
             "description": "Invalid data for update"
           },
           "404": {
             "description": "Task ID not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -190,11 +264,14 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "The task is successfully deleted"
           },
           "404": {
             "description": "Task ID not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -224,7 +301,7 @@
           {
             "name": "status",
             "in": "formData",
-            "description": "Set status of the task ('pending' or 'done')",
+            "description": "Set status of the task",
             "required": false,
             "type": "string",
             "enum": [
@@ -235,13 +312,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful operation"
+            "description": "Successful set the task's status"
           },
           "400": {
             "description": "Invalid task's status"
           },
           "404": {
             "description": "Task ID not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
