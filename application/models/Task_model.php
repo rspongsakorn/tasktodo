@@ -42,7 +42,8 @@ class Task_model extends CI_Model {
 
     function insertTask($data){
         $result = $this->db->insert('tasks', $data);
-        return $result;
+        $insert_id = $this->db->insert_id();
+        return array("result" => $result, "insert_id" => $insert_id) ;
     }
     
     function updateTask($id, $data){

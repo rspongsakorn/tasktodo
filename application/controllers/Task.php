@@ -68,7 +68,7 @@ class Task extends REST_Controller {
                 'status' => isset($_POST['status']) && $_POST['status'] == "done" ? "done" : "pending"
             );
             $result = $this->Task_model->insertTask($data);
-            if($result){
+            if($result['result']){
                 $this->response(array("message" => "The Task is successfully created"), 201);
             }else{
                 $this->response(array("message" => "Fail to create task, Please try again later"), 500);
