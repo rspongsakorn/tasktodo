@@ -53,9 +53,10 @@ $route['default_controller'] = 'task';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['task']['POST'] = 'task/create';
 $route['task']['GET'] = 'task/viewAll';
 $route['task/(:any)']['GET'] = 'task/view/$1';
-$route['task']['POST'] = 'task/create';
 $route['task/(:any)']['PUT'] = 'task/update/$1';
 $route['task/(:any)']['DELETE'] = 'task/delete/$1';
+$route['task/(:any)/setStatus']['PUT'] = 'task/setStatus/$1';
 
