@@ -1,0 +1,270 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a simple 'TODO' task list",
+    "version": "1.0.0",
+    "title": "Task TODO list",
+    "contact": {
+      "email": "rs.pongsakorn@gmail.com"
+    }
+  },
+  "host": "localhost",
+  "basePath": "/tasktodo",
+  "consumes": [
+    "multipart/form-data"
+  ],
+  "tags": [
+    {
+      "name": "Task",
+      "description": "Access to 'TODO' task lists"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/task": {
+      "post": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Create new task",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "subject",
+            "in": "formData",
+            "description": "Subject of the task",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "detail",
+            "in": "formData",
+            "description": "Detail of the task",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "formData",
+            "description": "Set status of the task ('pending' or 'done') - default is 'pending'",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "pending",
+              "done"
+            ]
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The task is successfully created"
+          },
+          "400": {
+            "description": "Invalid Order"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Retrive Task(s) detail",
+        "description": "",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        }
+      }
+    },
+    "/task/{taskId}": {
+      "get": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Find task by ID",
+        "description": "",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "ID of task that needs to be fetched",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "404": {
+            "description": "Task ID not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Update exist task",
+        "description": "",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "ID of task that needs to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "subject",
+            "in": "formData",
+            "description": "Subject of the task",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "detail",
+            "in": "formData",
+            "description": "Detail of the task",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid data for update"
+          },
+          "404": {
+            "description": "Task ID not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Delete task by ID",
+        "description": "",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "ID of task that needs to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The task is successfully deleted"
+          },
+          "404": {
+            "description": "Task ID not found"
+          }
+        }
+      }
+    },
+    "/task/{taskId}/setStatus": {
+      "put": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Set the task status",
+        "description": "",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "ID of task that needs to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "formData",
+            "description": "Set status of the task ('pending' or 'done')",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "pending",
+              "done"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid task's status"
+          },
+          "404": {
+            "description": "Task ID not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Task": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "type": "integer"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+
+      }
+    }
+  }
+}

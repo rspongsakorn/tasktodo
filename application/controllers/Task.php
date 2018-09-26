@@ -52,6 +52,7 @@ class Task extends REST_Controller {
     public function update_put($id){
         $task = $this->Task_model->getTask($id);
         if($task){
+            $data = array();
             if($this->put('subject') && !empty($this->put('subject'))){
                 $data['subject'] = $this->put('subject');
             }
@@ -63,12 +64,17 @@ class Task extends REST_Controller {
             if($this->put('status') && !empty($this->put('status'))){
                 $data['status'] = $this->put('status');
             }
-            $result = $this->Task_model->updateTask($id, $data);
-            if($result) {
-                $this->response(array("message" => "The Task is successfully updated"), 200);
+            if($data){
+                $result = $this->Task_model->updateTask($id, $data);
+                if($result) {
+                    $this->response(array("message" => "The Task is successfully updated"), 200);
+                }else{
+                    $this->response(array("message" => "Fail to update the task, Please try again later"), 500);
+                }
             }else{
-                $this->response(array("message" => "Fail to update the task, Please try again later"), 500);
+                $this->response(array("message" => "'subject' or 'detail' data is need for update"), 400);
             }
+
         }else{
             $this->response(array("message" => "Task ID could not be found"), 404);
         }
@@ -77,14 +83,19 @@ class Task extends REST_Controller {
     public function setStatus_put($id){
         $task = $this->Task_model->getTask($id);
         if($task){
-            $data['status'] = ( $this->put('status') && ($this->put('status') == "done")) ? "done" : "pending";
+            if (in_array($this->put('status'), array("done", "pending"))) {
+                $data['status'] = ( $this->put('status') && ($this->put('status') == "done")) ? "done" : "pending";
 
-            $result = $this->Task_model->updateTask($id, $data);
-            if($result) {
-                $this->response(array("message" => "The Task is successfully updated"), 200);
+                $result = $this->Task_model->updateTask($id, $data);
+                if($result) {
+                    $this->response(array("message" => "The Task's status is successfully set"), 200);
+                }else{
+                    $this->response(array("message" => "Fail to update the task, Please try again later"), 500);
+                }
             }else{
-                $this->response(array("message" => "Fail to update the task, Please try again later"), 500);
+                $this->response(array("message" => "Task's status could be 'pending' or 'done' only"), 404);
             }
+
         }else{
             $this->response(array("message" => "Task ID could not be found"), 404);
         }
