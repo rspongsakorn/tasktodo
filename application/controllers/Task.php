@@ -123,7 +123,7 @@ class Task extends REST_Controller {
                     $this->response(array("message" => "Fail to update the task, Please try again later"), 500);
                 }
             }else{
-                $this->response(array("message" => "Task's status could be 'pending' or 'done' only"), 404);
+                $this->response(array("message" => "Task's status could be 'pending' or 'done' only"), 400);
             }
 
         }else{
